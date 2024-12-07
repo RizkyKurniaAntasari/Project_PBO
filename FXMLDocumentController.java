@@ -47,6 +47,35 @@ public class FXMLDocumentController implements Initializable {
     private boolean gameStarted = false;
     private static boolean gameOver = false;
 
+    // Deklarasi Object
+    USER access = new AccessUser(); // Penerapan Polymorphisme
+    FOOD food = new FOOD(); // akses food
+   
+    // Kebutuhan Stage / Arena
+    public static class Stage{
+        private static final int CORNERSIZE = 25;
+        private static final int WIDTH = 600/CORNERSIZE;
+        private static final int HEIGHT = 400/CORNERSIZE; // 24,16,25    
+
+
+        public static int getCornersize() {
+            return CORNERSIZE;
+        }
+
+
+        public static int getWidth() {
+            return WIDTH;
+        }
+
+
+        public static int getHeight() {
+            return HEIGHT;
+        }
+    }
+   
+
+
     }    
     
 }
+ 
