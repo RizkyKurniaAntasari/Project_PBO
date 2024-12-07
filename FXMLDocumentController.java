@@ -73,12 +73,11 @@ public class FXMLDocumentController implements Initializable {
         }
     }
    
+    public void initialize() {
+        gameCanvas.setFocusTraversable(true);
+        gameCanvas.setOnKeyPressed(this::handleKeyPress);
+    }
 
 
-
-
-
-
-    
     }       
 }
