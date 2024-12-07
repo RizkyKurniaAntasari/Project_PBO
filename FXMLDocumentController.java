@@ -19,66 +19,58 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import javafx.scene.control.Label;
-/**
- *
- * @author Rizky Kurnia Antasari
- */
-public class FXMLDocumentController implements Initializable {
-    
-     @FXML
-    private TextField idField, nameField;
 
+public class FXMLDocumentController {
+
+    @FXML
+    private TextField idField, nameField;
 
     @FXML
     private Canvas gameCanvas;
 
-
     @FXML
     private Label statusLabel;
-           
-    // Global Variable    
+            
+    // Global Variable     
     private static final List<Corner> snake = new ArrayList<>();
    
     private static int score, speed = 5;
     private static Dir direction = Dir.left;
    
     private static final Random rand = new Random();
-   
+    
     private boolean gameStarted = false;
     private static boolean gameOver = false;
 
     // Deklarasi Object
     USER access = new AccessUser(); // Penerapan Polymorphisme
     FOOD food = new FOOD(); // akses food
-   
+    
     // Kebutuhan Stage / Arena
     public static class Stage{
         private static final int CORNERSIZE = 25;
         private static final int WIDTH = 600/CORNERSIZE;
         private static final int HEIGHT = 400/CORNERSIZE; // 24,16,25    
 
-
         public static int getCornersize() {
             return CORNERSIZE;
         }
-
 
         public static int getWidth() {
             return WIDTH;
         }
 
-
         public static int getHeight() {
             return HEIGHT;
         }
     }
-   
+    
     public void initialize() {
         gameCanvas.setFocusTraversable(true);
         gameCanvas.setOnKeyPressed(this::handleKeyPress);
     }
-
-        // Kebutuhan User
+     
+    // Kebutuhan User
     public abstract class USER{
         protected int userId;
         protected String userName;
@@ -89,6 +81,29 @@ public class FXMLDocumentController implements Initializable {
         public abstract void currentPlay(boolean gameOver);
     }
     
+    public class AccessUser extends USER{
+        @Override
+        public void currentPlay(boolean gameOver){
+            statusLabel.setText("Guest " + access.getUserName() + " dengan ID " + access.getUserId() + (gameOver ? " SELESAI bermain " : " SEDANG bermain." ));
+        }
+        @Override
+        public void setUserId(int userId){
+            this.userId = userId;
+        }
+        @Override
+        public void setUserName(String userName){
+            this.userName = userName;
+        }
+        @Override
+        public int getUserId(){
+            return userId;
+        }
+        @Override
+        public String getUserName(){
+            return userName;
+        }
+    }
+
     public class AccessUser extends USER{
         @Override
         public void currentPlay(boolean gameOver){
@@ -113,9 +128,9 @@ public class FXMLDocumentController implements Initializable {
     }
     public class FOOD{
         private int foodX, foodY;
-       
+        
         public FOOD(){}
-       
+        
         public int getFoodX() {
             return foodX;
         }
@@ -140,40 +155,34 @@ public class FXMLDocumentController implements Initializable {
     public static class Corner {
         int x, y;
 
-
         public Corner(int x, int y) {
             this.x = x;
             this.y = y;
         }
 
-
         public int getX() {
             return x;
         }
-
 
         public void setX(int x) {
             this.x = x;
         }
 
-
         public int getY() {
             return y;
         }
-
 
         public void setY(int y) {
             this.y = y;
         }
     }
-      
+
     @FXML
-    private void handleStartGame() {
+    private void handleStartGame() { // Pemicu Start Game
         if (gameStarted) return;
 
         String idText = idField.getText();
         String name = nameField.getText();
-
 
         if (idText.isEmpty() || name.isEmpty()) {
             showAlert(Alert.AlertType.ERROR, "Input Error", "Please fill in all fields.");
@@ -182,33 +191,30 @@ public class FXMLDocumentController implements Initializable {
 
         try {
             //USER user = new AccessUser(); // kalo mau ganti user juga bisa, tapi ubah semua access
-           
+            
             access.setUserId(Integer.parseInt(idText));
             access.setUserName(name);
             gameStarted = true;
             gameCanvas.requestFocus(); // Fokus ke canvas sebelum memulai game
 
             access.currentPlay(gameOver);
-           
+            
             startGame();
         } catch (NumberFormatException ex) {
             showAlert(Alert.AlertType.ERROR, "Input Error", "ID must be an integer.");
         }
     }
 
-   // Game Logic
+    // Game Logic
     private void startGame() {
         GraphicsContext gc = gameCanvas.getGraphicsContext2D();
         gameCanvas.requestFocus(); // Fokus ke canvas sebelum memulai game
 
-
         snake.add(new Corner(Stage.WIDTH / 2, Stage.HEIGHT / 2)); // Start snake at the center
         newFood();
 
-
         new AnimationTimer() {
             long lastTick = 0;
-
 
             @Override
             public void handle(long now) {
@@ -217,7 +223,6 @@ public class FXMLDocumentController implements Initializable {
                     tick(gc);
                     return;
                 }
-
 
                 if (now - lastTick > 1000000000 / speed) {
                     lastTick = now;
@@ -230,10 +235,9 @@ public class FXMLDocumentController implements Initializable {
     private void tick(GraphicsContext gc) {
         if (gameOver) {
             saveScore();
-            access.currentPlay(gameOver); // Merubah status menjadi selesai bermain
+            access.currentPlay(gameOver); // Merubah status menjadi selesai bermain 
             return;
         }
-
 
         Corner head = snake.get(0);
         Corner newHead;
@@ -254,18 +258,15 @@ public class FXMLDocumentController implements Initializable {
                 throw new IllegalStateException("Unexpected direction: " + direction);
         }
 
-
         if (newHead.x < 0 || newHead.y < 0 || newHead.x >= Stage.getWidth()|| newHead.y >= Stage.getHeight()) {
             gameOver = true;
         }
-
 
         for (int i = 1; i < snake.size(); i++) {
             if (snake.get(i).x == newHead.x && snake.get(i).y == newHead.y) {
                 gameOver = true;
             }
         }
-
 
         if (!gameOver) {
             snake.add(0, newHead);
@@ -291,7 +292,8 @@ public class FXMLDocumentController implements Initializable {
         gc.setFont(new Font("", 20));
         gc.fillText("Score: " + score, 10, 20);
     }
-       private void handleKeyPress(KeyEvent key) {
+
+    private void handleKeyPress(KeyEvent key) {
         switch (key.getCode()) {
             case W : {
                 if (direction != Dir.down) direction = Dir.up;
@@ -312,7 +314,6 @@ public class FXMLDocumentController implements Initializable {
         }
     }
 
-
     private void newFood() {
         while (true) {
             food.setFoodX(rand.nextInt(Stage.getWidth()));
@@ -322,7 +323,8 @@ public class FXMLDocumentController implements Initializable {
             }
         }
     }
-private Connection connectDatabase() {
+    
+    private Connection connectDatabase() {
         String url = "jdbc:mysql://localhost:3306/db_snakeisreal";
         String user = "root";
         String password = "";
@@ -364,12 +366,12 @@ private Connection connectDatabase() {
             showAlert(Alert.AlertType.ERROR, "Database Error", "Failed to save score.");
         }
     }
-        private void showAlert(Alert.AlertType type, String title, String message) {
+    
+    private void showAlert(Alert.AlertType type, String title, String message) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
-    
-    }       
+    }
 }
