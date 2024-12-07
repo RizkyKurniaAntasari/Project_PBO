@@ -166,6 +166,30 @@ public class FXMLDocumentController implements Initializable {
             this.y = y;
         }
     }
+      
+    public class AccessUser extends USER{
+        @Override
+        public void currentPlay(boolean gameOver){
+            statusLabel.setText("User " + access.getUserName() + " dengan ID " + access.getUserId() + (gameOver ? " SELESAI bermain " : " SEDANG bermain." ));
+        }
+        @Override
+        public void setUserId(int userId){
+            this.userId = userId;
+        }
+        @Override
+        public void setUserName(String userName){
+            this.userName = userName;
+        }
+        @Override
+        public int getUserId(){
+            return userId;
+        }
+        @Override
+        public String getUserName(){
+            return userName;
+        }
+    }
+
 
     }       
 }
