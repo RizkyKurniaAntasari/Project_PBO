@@ -111,6 +111,31 @@ public class FXMLDocumentController implements Initializable {
             return userName;
         }
     }
+    public class FOOD{
+        private int foodX, foodY;
+       
+        public FOOD(){}
+       
+        public int getFoodX() {
+            return foodX;
+        }
+
+        public void setFoodX(int foodX) {
+            this.foodX = foodX;
+        }
+
+        public int getFoodY() {
+            return foodY;
+        }
+
+        public void setFoodY(int foodY) {
+            this.foodY = foodY;
+        }
+    }
+     
+    public enum Dir {
+        left, right, up, down;
+    }
 
 
 
