@@ -291,6 +291,26 @@ public class FXMLDocumentController implements Initializable {
         gc.setFont(new Font("", 20));
         gc.fillText("Score: " + score, 10, 20);
     }
-    
+       private void handleKeyPress(KeyEvent key) {
+        switch (key.getCode()) {
+            case W : {
+                if (direction != Dir.down) direction = Dir.up;
+                break;
+            }
+            case S : {
+                if (direction != Dir.up) direction = Dir.down;
+                break;
+            }
+            case A :{
+                if (direction != Dir.right) direction = Dir.left;
+                break;
+            }
+            case D :{
+                if (direction != Dir.left) direction = Dir.right;
+                break;
+            }
+        }
+    }
+
     }       
 }
