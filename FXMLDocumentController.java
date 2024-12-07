@@ -312,5 +312,16 @@ public class FXMLDocumentController implements Initializable {
         }
     }
 
+
+    private void newFood() {
+        while (true) {
+            food.setFoodX(rand.nextInt(Stage.getWidth()));
+            food.setFoodY(rand.nextInt(Stage.getHeight()));
+            if (snake.stream().noneMatch(c -> c.x == food.getFoodX() && c.y == food.getFoodY())) {
+                break;
+            }
+        }
+    }
+
     }       
 }
