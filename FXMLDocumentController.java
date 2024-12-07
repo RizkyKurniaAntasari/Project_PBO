@@ -196,6 +196,36 @@ public class FXMLDocumentController implements Initializable {
         }
     }
 
+   // Game Logic
+    private void startGame() {
+        GraphicsContext gc = gameCanvas.getGraphicsContext2D();
+        gameCanvas.requestFocus(); // Fokus ke canvas sebelum memulai game
+
+
+        snake.add(new Corner(Stage.WIDTH / 2, Stage.HEIGHT / 2)); // Start snake at the center
+        newFood();
+
+
+        new AnimationTimer() {
+            long lastTick = 0;
+
+
+            @Override
+            public void handle(long now) {
+                if (lastTick == 0) {
+                    lastTick = now;
+                    tick(gc);
+                    return;
+                }
+
+
+                if (now - lastTick > 1000000000 / speed) {
+                    lastTick = now;
+                    tick(gc);
+                }
+            }
+        }.start();
+    }
 
     }       
 }
