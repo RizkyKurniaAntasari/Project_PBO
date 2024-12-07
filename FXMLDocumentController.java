@@ -51,18 +51,9 @@ public class FXMLDocumentController {
         private static final int CORNERSIZE = 25;
         private static final int WIDTH = 600/CORNERSIZE;
         private static final int HEIGHT = 400/CORNERSIZE; // 24,16,25    
-
-        public static int getCornersize() {
-            return CORNERSIZE;
-        }
-
-        public static int getWidth() {
-            return WIDTH;
-        }
-
-        public static int getHeight() {
-            return HEIGHT;
-        }
+        public static int getCornersize() { return CORNERSIZE; }
+        public static int getWidth() { return WIDTH; }
+        public static int getHeight() { return HEIGHT; }
     }
     
     public void initialize() {
@@ -80,52 +71,39 @@ public class FXMLDocumentController {
         public abstract String getUserName();
         public abstract void currentPlay(boolean gameOver);
     }
-    
-    public class AccessUser extends USER{
-        @Override
-        public void currentPlay(boolean gameOver){
-            statusLabel.setText("Guest " + access.getUserName() + " dengan ID " + access.getUserId() + (gameOver ? " SELESAI bermain " : " SEDANG bermain." ));
-        }
-        @Override
-        public void setUserId(int userId){
-            this.userId = userId;
-        }
-        @Override
-        public void setUserName(String userName){
-            this.userName = userName;
-        }
-        @Override
-        public int getUserId(){
-            return userId;
-        }
-        @Override
-        public String getUserName(){
-            return userName;
-        }
-    }
 
     public class AccessUser extends USER{
         @Override
         public void currentPlay(boolean gameOver){
-            statusLabel.setText("User " + access.getUserName() + " dengan ID " + access.getUserId() + (gameOver ? " SELESAI bermain " : " SEDANG bermain." ));
+            statusLabel.setText("User " + access.getUserName() + " dengan ID " + 
+            access.getUserId() + (gameOver ? " SELESAI bermain " : " SEDANG bermain." ));
         }
         @Override
-        public void setUserId(int userId){
-            this.userId = userId;
-        }
+        public void setUserId(int userId){ this.userId = userId; }
         @Override
-        public void setUserName(String userName){
-            this.userName = userName;
-        }
+        public void setUserName(String userName){ this.userName = userName; }
         @Override
-        public int getUserId(){
-            return userId;
-        }
+        public int getUserId(){ return userId; }
         @Override
-        public String getUserName(){
-            return userName;
-        }
+        public String getUserName(){ return userName; }
     }
+    
+    public class AccessGuest extends USER{
+        @Override
+        public void currentPlay(boolean gameOver){
+            statusLabel.setText("Guest " + access.getUserName() + " dengan ID " + 
+            access.getUserId() + (gameOver ? " SELESAI bermain " : " SEDANG bermain." )); 
+        }
+        @Override
+        public void setUserId(int userId){ this.userId = userId; }
+        @Override
+        public void setUserName(String userName){ this.userName = userName; }
+        @Override
+        public int getUserId(){ return userId; }
+        @Override
+        public String getUserName(){ return userName; }
+    }
+
     public class FOOD{
         private int foodX, foodY;
         
@@ -178,7 +156,7 @@ public class FXMLDocumentController {
     }
 
     @FXML
-    private void handleStartGame() { // Pemicu Start Game
+    private void handleStartGame() {
         if (gameStarted) return;
 
         String idText = idField.getText();
@@ -190,8 +168,6 @@ public class FXMLDocumentController {
         }
 
         try {
-            //USER user = new AccessUser(); // kalo mau ganti user juga bisa, tapi ubah semua access
-            
             access.setUserId(Integer.parseInt(idText));
             access.setUserName(name);
             gameStarted = true;
