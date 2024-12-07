@@ -227,5 +227,57 @@ public class FXMLDocumentController implements Initializable {
         }.start();
     }
 
+    private void tick(GraphicsContext gc) {
+        if (gameOver) {
+            saveScore();
+            access.currentPlay(gameOver); // Merubah status menjadi selesai bermain
+            return;
+        }
+
+
+        Corner head = snake.get(0);
+        Corner newHead;
+        switch (direction) {
+            case up:
+                newHead = new Corner(head.x, head.y - 1);
+                break;
+            case down:
+                newHead = new Corner(head.x, head.y + 1);
+                break;
+            case left:
+                newHead = new Corner(head.x - 1, head.y);
+                break;
+            case right:
+                newHead = new Corner(head.x + 1, head.y);
+                break;
+            default:
+                throw new IllegalStateException("Unexpected direction: " + direction);
+        }
+
+
+        if (newHead.x < 0 || newHead.y < 0 || newHead.x >= Stage.getWidth()|| newHead.y >= Stage.getHeight()) {
+            gameOver = true;
+        }
+
+
+        for (int i = 1; i < snake.size(); i++) {
+            if (snake.get(i).x == newHead.x && snake.get(i).y == newHead.y) {
+                gameOver = true;
+            }
+        }
+
+
+        if (!gameOver) {
+            snake.add(0, newHead);
+            if (food.getFoodX() == newHead.x && food.getFoodY() == newHead.y) {
+                score++;
+                speed++;
+                newFood();
+            } else {
+                snake.remove(snake.size() - 1);
+            }
+        }
+
+    
     }       
 }
