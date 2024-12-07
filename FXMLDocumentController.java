@@ -78,6 +78,18 @@ public class FXMLDocumentController implements Initializable {
         gameCanvas.setOnKeyPressed(this::handleKeyPress);
     }
 
+        // Kebutuhan User
+    public abstract class USER{
+        protected int userId;
+        protected String userName;
+        public abstract void setUserId(int userId);
+        public abstract void setUserName(String userName);
+        public abstract int getUserId();
+        public abstract String getUserName();
+        public abstract void currentPlay(boolean gameOver);
+    }
+   
+
 
     }       
 }
