@@ -278,6 +278,19 @@ public class FXMLDocumentController implements Initializable {
             }
         }
 
+        gc.setFill(Color.BLACK); // Background
+        gc.fillRect(0, 0, Stage.getWidth() * Stage.getCornersize(), Stage.getHeight() * Stage.getCornersize()); // Bersihin canvas
+        gc.setFill(Color.RED); // warna food
+        gc.fillOval(food.getFoodX() * Stage.getCornersize(), food.getFoodY() * Stage.getCornersize(), Stage.getCornersize(), Stage.getCornersize()); // koordinat x ,y ,lebar, tinggi
+        for (Corner c : snake) {
+            gc.setFill(Color.LIME);
+            gc.fillRect(c.x * Stage.getCornersize(), c.y * Stage.getCornersize(), Stage.getCornersize() - 1, Stage.getCornersize() - 1);
+        }
+
+        gc.setFill(Color.WHITE);
+        gc.setFont(new Font("", 20));
+        gc.fillText("Score: " + score, 10, 20);
+    }
     
     }       
 }
