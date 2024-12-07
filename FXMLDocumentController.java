@@ -167,26 +167,32 @@ public class FXMLDocumentController implements Initializable {
         }
     }
       
-    public class AccessUser extends USER{
-        @Override
-        public void currentPlay(boolean gameOver){
-            statusLabel.setText("User " + access.getUserName() + " dengan ID " + access.getUserId() + (gameOver ? " SELESAI bermain " : " SEDANG bermain." ));
+    @FXML
+    private void handleStartGame() {
+        if (gameStarted) return;
+
+        String idText = idField.getText();
+        String name = nameField.getText();
+
+
+        if (idText.isEmpty() || name.isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, "Input Error", "Please fill in all fields.");
+            return;
         }
-        @Override
-        public void setUserId(int userId){
-            this.userId = userId;
-        }
-        @Override
-        public void setUserName(String userName){
-            this.userName = userName;
-        }
-        @Override
-        public int getUserId(){
-            return userId;
-        }
-        @Override
-        public String getUserName(){
-            return userName;
+
+        try {
+            //USER user = new AccessUser(); // kalo mau ganti user juga bisa, tapi ubah semua access
+           
+            access.setUserId(Integer.parseInt(idText));
+            access.setUserName(name);
+            gameStarted = true;
+            gameCanvas.requestFocus(); // Fokus ke canvas sebelum memulai game
+
+            access.currentPlay(gameOver);
+           
+            startGame();
+        } catch (NumberFormatException ex) {
+            showAlert(Alert.AlertType.ERROR, "Input Error", "ID must be an integer.");
         }
     }
 
