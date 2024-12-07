@@ -337,5 +337,33 @@ private Connection connectDatabase() {
         }
     }
 
+    private void saveScore() {
+        try (Connection connection = connectDatabase()) {
+            if (connection != null) {
+                String checkSql = "SELECT score FROM user_score WHERE id_user = ?";
+                PreparedStatement checkStatement = connection.prepareStatement(checkSql);
+                checkStatement.setInt(1, access.getUserId());
+                ResultSet resultSet = checkStatement.executeQuery();
+
+                if (resultSet.next() && score > resultSet.getInt("score")) {
+                    String updateSql = "UPDATE user_score SET score = ? WHERE id_user = ?";
+                    PreparedStatement updateStatement = connection.prepareStatement(updateSql);
+                    updateStatement.setInt(1, score);
+                    updateStatement.setInt(2, access.getUserId());
+                    updateStatement.executeUpdate();
+                } else {
+                    String insertSql = "INSERT INTO user_score (id_user, name, score) VALUES (?, ?, ?)";
+                    PreparedStatement insertStatement = connection.prepareStatement(insertSql);
+                    insertStatement.setInt(1, access.getUserId());
+                    insertStatement.setString(2, access.getUserName());
+                    insertStatement.setInt(3, score);
+                    insertStatement.executeUpdate();
+                }
+            }
+        } catch (SQLException ex) {
+            showAlert(Alert.AlertType.ERROR, "Database Error", "Failed to save score.");
+        }
+    }
+    
     }       
 }
