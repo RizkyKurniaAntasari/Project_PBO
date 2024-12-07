@@ -25,18 +25,28 @@ import javafx.scene.control.Label;
  */
 public class FXMLDocumentController implements Initializable {
     
+     @FXML
+    private TextField idField, nameField;
+
+
     @FXML
-    private Label label;
-    
+    private Canvas gameCanvas;
+
+
     @FXML
-    private void handleButtonAction(ActionEvent event) {
-        System.out.println("You clicked me!");
-        label.setText("Hello World!");
-    }
-    
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+    private Label statusLabel;
+           
+    // Global Variable    
+    private static final List<Corner> snake = new ArrayList<>();
+   
+    private static int score, speed = 5;
+    private static Dir direction = Dir.left;
+   
+    private static final Random rand = new Random();
+   
+    private boolean gameStarted = false;
+    private static boolean gameOver = false;
+
     }    
     
 }
