@@ -322,6 +322,20 @@ public class FXMLDocumentController implements Initializable {
             }
         }
     }
+private Connection connectDatabase() {
+        String url = "jdbc:mysql://localhost:3306/db_snakeisreal";
+        String user = "root";
+        String password = "";
+        try {
+            Connection connection = DriverManager.getConnection(url, user, password);
+            System.out.println("Database connected!");
+            return connection;
+        } catch (SQLException e) {
+            System.out.println("Failed to connect to database: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Database Error", "Could not connect to the database.");
+            return null;
+        }
+    }
 
     }       
 }
